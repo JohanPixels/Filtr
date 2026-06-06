@@ -9,33 +9,27 @@ DEPARTAMENTO = "Huila"
 
 def fetch_secop(BASE_URL, LIMIT, DEPARTAMENTO):
     offset = 0
-    todos_los_datos = []
+    counter = 0
+    with open("../data/raw_huila.jsonl", "w") as f:
+        while True:
+            params = {
+                "$limit": LIMIT,
+                "$offset": offset,
+                "$where": f"departamento='{DEPARTAMENTO}'",
+            }
+            pagina = requests.get(BASE_URL, params=params)
+            datos = pagina.json()
 
-    while True:
-        params = {
-            "$limit": LIMIT,
-            "$offset": offset,
-            "$where": f"departamento='{DEPARTAMENTO}'",
-        }
-        pagina = requests.get(BASE_URL, params=params)
-        datos = pagina.json()
+            if len(datos) == 0:
+                break
 
-        if len(datos) == 0:
-            break
+            offset += LIMIT
 
-        todos_los_datos += datos
-        offset += LIMIT
-    return todos_los_datos
+            for record in datos:
+                f.write(json.dumps(record) + "\n")
+                counter += 1
+    print(f"Total records fetched: {counter}")
 
 
 if __name__ == "__main__":
-    datos = fetch_secop(BASE_URL, LIMIT, DEPARTAMENTO)
-    print(
-        f"Se han obtenido {len(datos)} registros del SECOP para el departamento de {DEPARTAMENTO}."
-    )
-    print(datos[0])
-    with open("etl/data/raw_huila.json", "w") as f:
-        json.dump(
-            datos,
-            f,
-        )
+    fetch_secop(BASE_URL, LIMIT, DEPARTAMENTO)
