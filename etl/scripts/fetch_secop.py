@@ -27,9 +27,12 @@ def fetch_secop(BASE_URL, LIMIT, DEPARTAMENTO):
 
             for record in datos:
                 f.write(json.dumps(record) + "\n")
+                yield record
                 counter += 1
+
     print(f"Total records fetched: {counter}")
 
 
 if __name__ == "__main__":
-    fetch_secop(BASE_URL, LIMIT, DEPARTAMENTO)
+    for _ in fetch_secop(BASE_URL, LIMIT, DEPARTAMENTO):
+        pass

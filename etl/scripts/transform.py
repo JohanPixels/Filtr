@@ -1,4 +1,3 @@
-import json
 import re
 
 INVALID_VALUES = {"NO DEFINIDO", "SIN DESCRIPCION"}
@@ -176,27 +175,11 @@ def clean_contratistas(record):
     return contratista_cleaned
 
 
-with open("../data/raw_huila.jsonl", "r") as f:
-    entidades_cleaned = []
-    contratos_cleaned = []
-    contratistas_cleaned = []
+def transform_records(records):
 
-    for line in f:
-        record = json.loads(line)
-        entidad = clean_entidades(record)
-        contrato = clean_contratos(record)
-        contratista = clean_contratistas(record)
-
-        entidades_cleaned.append(entidad)
-        contratos_cleaned.append(contrato)
-        contratistas_cleaned.append(contratista)
-
-        print("--- entidad ---")
-        print(entidad)
-        print("--- contrato ---")
-        print(contrato)
-        print("--- contratista ---")
-        print(contratista)
-    print(
-        f"Cleaned: {len(entidades_cleaned)} entidades, {len(contratos_cleaned)} contratos, {len(contratistas_cleaned)} contratistas"
-    )
+    for record in records:
+        yield {
+            "entidad": clean_entidades(record),
+            "contrato": clean_contratos(record),
+            "contratista": clean_contratistas(record),
+        }
