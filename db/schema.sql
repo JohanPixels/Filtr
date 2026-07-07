@@ -11,6 +11,19 @@ CREATE TABLE entidades (
     entidad_centralizada VARCHAR
 );
 
+CREATE TABLE contratistas (
+    contratista_id SERIAL PRIMARY KEY,
+    tipodocproveedor VARCHAR,
+    documento_proveedor VARCHAR UNIQUE NOT NULL,
+    proveedor_adjudicado VARCHAR,
+    nombre_representante_legal VARCHAR,
+    nacionalidad_representante_legal VARCHAR,
+    domicilio_representante_legal VARCHAR,
+    tipo_identificacion_representante_legal VARCHAR,
+    identificacion_representante_legal VARCHAR,
+    genero_representante_legal VARCHAR
+);
+
 CREATE TABLE contratos (
     id SERIAL PRIMARY KEY,
     id_contrato VARCHAR UNIQUE NOT NULL,
@@ -53,19 +66,6 @@ CREATE TABLE contratos (
     contratista_id INT,
     FOREIGN KEY (entidad_id) REFERENCES entidades(entidad_id),
     FOREIGN KEY (contratista_id) REFERENCES contratistas(contratista_id)
-);
-
-CREATE TABLE contratistas (
-    contratista_id SERIAL PRIMARY KEY,
-    tipodocproveedor VARCHAR,
-    documento_proveedor VARCHAR UNIQUE NOT NULL,
-    proveedor_adjudicado VARCHAR,
-    nombre_representante_legal VARCHAR,
-    nacionalidad_representante_legal CHAR,
-    domicilio_representante_legal VARCHAR,
-    tipo_identificacion_representante_legal VARCHAR,
-    identificacion_representante_legal VARCHAR,
-    genero_representante_legal VARCHAR
 );
 
 CREATE TABLE flags_riesgo (
