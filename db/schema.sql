@@ -1,3 +1,5 @@
+CREATE EXTENSION IF NOT EXISTS unaccent;
+
 CREATE TABLE entidades (
     entidad_id SERIAL PRIMARY KEY,
     nombre_entidad VARCHAR,
